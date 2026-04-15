@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}分析历史 | GEO 大模型优化工具{% endblock %}
+
+{% block content %}
+<section class="topbar compact">
+  <div>
+    <p class="eyebrow">Analysis Archive</p>
+    <h1>分析历史</h1>
+    <p class="lede">查看最近的 GEO 分析记录，进入详情页或导出 JSON。</p>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>历史记录列表</h2>
+    <p>系统按时间倒序展示最近分析任务。</p>
+  </div>
+  <div id="history-list" class="history-list history-page-list"></div>
+</section>
+{% endblock %}

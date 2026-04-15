@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}用户管理 | GEO 大模型优化工具{% endblock %}
+
+{% block content %}
+<section class="topbar compact">
+  <div>
+    <p class="eyebrow">Access Control</p>
+    <h1>用户管理</h1>
+    <p class="lede">当前版本先提供用户和角色浏览，后续可继续扩展创建与权限编辑。</p>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>用户列表</h2>
+    <p>系统会在初始化时自动种一个管理员账号。</p>
+  </div>
+  <form id="user-form" class="form inline-form">
+    <label>
+      <span>用户名</span>
+      <input id="new-username" name="username" placeholder="new-user" required>
+    </label>
+    <label>
+      <span>密码</span>
+      <input id="new-password" name="password" type="password" placeholder="临时密码" required>
+    </label>
+    <label>
+      <span>角色</span>
+      <select id="new-role" name="role">
+        <option value="analyst">analyst</option>
+        <option value="admin">admin</option>
+      </select>
+    </label>
+    <button class="submit" type="submit">创建用户</button>
+  </form>
+  <div id="admin-feedback" class="feedback-banner hidden"></div>
+  <div id="user-list" class="provider-list"></div>
+</section>
+{% endblock %}

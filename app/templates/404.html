@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}未找到记录 | GEO 大模型优化工具{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <div class="panel-heading">
+    <h2>记录不存在</h2>
+    <p>这个分析记录可能已经被删除，或者 ID 不正确。</p>
+  </div>
+  <a class="secondary-button" href="{{ url_for('history_page') }}">返回历史记录</a>
+</section>
+{% endblock %}

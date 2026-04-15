@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}任务详情 {{ job.id }} | GEO 大模型优化工具{% endblock %}
+
+{% block content %}
+<section class="topbar compact">
+  <div>
+    <p class="eyebrow">Job Detail</p>
+    <h1>任务详情</h1>
+    <p class="lede">{{ job.id }}</p>
+  </div>
+</section>
+
+<section class="grid detail-grid">
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>任务状态</h2>
+      <p>查看任务执行状态、重试次数和创建人。</p>
+    </div>
+    <div class="chips">
+      <span class="chip">状态：{{ job.status }}</span>
+      <span class="chip">重试：{{ job.retries }}/{{ job.max_retries }}</span>
+      <span class="chip">创建人：{{ job.created_by or "system" }}</span>
+    </div>
+    <div class="action-row">
+      {% if job.status == 'failed' %}
+      <button class="secondary-button" data-retry-job="{{ job.id }}">重跑任务</button>
+      {% endif %}
+      <a class="secondary-button" href="{{ url_for('jobs_page') }}">返回任务列表</a>
+    </div>
+    {% if job.error %}
+    <div class="code-card">
+      <h3>错误信息</h3>
+      <pre><code>{{ job.error | tojson(indent=2) }}</code></pre>
+    </div>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>任务数据</h2>
+      <p>包含任务 payload 与执行结果。</p>
+    </div>
+    <div class="code-card">
+      <h3>Payload</h3>
+      <pre><code>{{ job.payload | tojson(indent=2) }}</code></pre>
+    </div>
+    <div class="code-card">
+      <h3>Result</h3>
+      <pre><code>{{ job.result | tojson(indent=2) }}</code></pre>
+    </div>
+  </section>
+</section>
+{% endblock %}

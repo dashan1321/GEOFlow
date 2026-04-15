@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}分析详情 #{{ record.id }} | GEO 大模型优化工具{% endblock %}
+
+{% block content %}
+<section class="topbar compact">
+  <div>
+    <p class="eyebrow">Analysis Detail</p>
+    <h1>分析详情 #{{ record.id }}</h1>
+    <p class="lede">{{ record.query }}</p>
+  </div>
+  <div class="hero-card small">
+    <div class="stat">
+      <span>模型</span>
+      <strong>{{ record.model }}</strong>
+    </div>
+    <div class="stat">
+      <span>地点</span>
+      <strong>{{ record.location_name or "未填写" }}</strong>
+    </div>
+  </div>
+</section>
+
+<section class="grid detail-grid">
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>结果摘要</h2>
+      <p>包含分析文本、推荐结果和增强标签。</p>
+    </div>
+    <article class="analysis-box">
+      <h3>模型分析</h3>
+      <p>{{ record.response.analysis }}</p>
+    </article>
+    <section>
+      <h3>增强标签</h3>
+      <div class="chips">
+        {% for tag in record.response.enriched_tags %}
+        <span class="chip">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    </section>
+    <section>
+      <h3>推荐结果</h3>
+      <div class="recommendations">
+        {% for item in record.response.recommendations %}
+        <article class="recommendation-item">
+          <h4>{{ item.title }}</h4>
+          <p>{{ item.reason }}</p>
+          <p>关注类别：{{ item.focus_category }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>原始与标准化数据</h2>
+      <p>便于调试 GEO 上下文和模型请求。</p>
+    </div>
+    <div class="action-row">
+      <a class="secondary-button" href="{{ url_for('export_analysis', record_id=record.id) }}?format=json">导出 JSON</a>
+      <a class="secondary-button" href="{{ url_for('export_analysis', record_id=record.id) }}?format=xlsx">导出 Excel</a>
+      <a class="secondary-button" href="{{ url_for('export_analysis', record_id=record.id) }}?format=pdf">导出 PDF</a>
+      <a class="secondary-button" href="{{ url_for('history_page') }}">返回历史</a>
+    </div>
+    <div class="code-card">
+      <h3>标准化请求</h3>
+      <pre><code>{{ record.normalized_request | tojson(indent=2) }}</code></pre>
+    </div>
+    <div class="code-card">
+      <h3>响应结果</h3>
+      <pre><code>{{ record.response | tojson(indent=2) }}</code></pre>
+    </div>
+  </section>
+</section>
+{% endblock %}

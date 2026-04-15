@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}审计日志 | GEO 大模型优化工具{% endblock %}
+
+{% block content %}
+<section class="topbar compact">
+  <div>
+    <p class="eyebrow">Audit Trail</p>
+    <h1>审计日志</h1>
+    <p class="lede">记录登录、退出、分析提交、导出等关键后台行为。</p>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>审计事件</h2>
+    <p>便于后续做安全合规和运维追踪。</p>
+  </div>
+  <form id="audit-filter-form" class="form inline-form">
+    <label>
+      <span>操作者</span>
+      <input id="audit-actor" name="actor" placeholder="例如 admin">
+    </label>
+    <label>
+      <span>动作</span>
+      <input id="audit-action" name="action" placeholder="例如 analysis.export">
+    </label>
+    <button class="secondary-button" type="submit">筛选</button>
+  </form>
+  <div id="audit-list" class="history-list"></div>
+</section>
+{% endblock %}

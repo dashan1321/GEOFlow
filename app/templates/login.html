@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录 | GEO 大模型优化工具</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  </head>
+  <body class="login-body">
+    <main class="login-wrap">
+      <section class="login-card">
+        <p class="eyebrow">Secure Access</p>
+        <h1>登录 GEO 控制台</h1>
+        <p class="lede">使用管理员账号进入后台。默认账号密码可通过环境变量调整。</p>
+        {% if error %}
+        <div class="error-banner">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="{{ url_for('login_submit', next=request.args.get('next', '')) }}" class="form">
+          <label>
+            <span>用户名</span>
+            <input type="text" name="username" required>
+          </label>
+          <label>
+            <span>密码</span>
+            <input type="password" name="password" required>
+          </label>
+          <button class="submit" type="submit">登录</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

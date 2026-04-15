@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}仪表盘 | GEO 大模型优化工具{% endblock %}
+
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Geo + LLM Ops</p>
+    <h1>GEO 大模型优化工作台</h1>
+    <p class="lede">统一调度 GEO 预处理、模型分析、地图可视化和结果持久化。</p>
+  </div>
+  <div class="hero-card">
+    <div class="stat">
+      <span>已接入模型</span>
+      <strong>{{ supported_models | join(" / ") }}</strong>
+    </div>
+    <div class="stat">
+      <span>当前模式</span>
+      <strong>本地工作台</strong>
+    </div>
+  </div>
+</section>
+
+<section class="grid">
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>分析请求</h2>
+      <p>输入用户意图、地点、坐标和环境信号，直接运行 GEO 分析链路。</p>
+    </div>
+    <form id="geo-form" class="form">
+      <label>
+        <span>用户请求</span>
+        <textarea id="query" name="query" rows="4" placeholder="例如：推荐北京国贸周边适合商务晚餐的餐厅" required></textarea>
+      </label>
+      <div class="row">
+        <label>
+          <span>模型</span>
+          <select id="model" name="model">
+            {% for model in supported_models %}
+            <option value="{{ model }}" {% if model == default_model %}selected{% endif %}>{{ model }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          <span>地点名称</span>
+          <input id="location_name" name="location_name" placeholder="上海市浦东新区">
+        </label>
+      </div>
+      <div class="row triple">
+        <label>
+          <span>纬度</span>
+          <input id="lat" name="lat" type="number" step="any" placeholder="31.2304">
+        </label>
+        <label>
+          <span>经度</span>
+          <input id="lng" name="lng" type="number" step="any" placeholder="121.4737">
+        </label>
+        <label>
+          <span>坐标系</span>
+          <select id="coordinate_system" name="coordinate_system">
+            <option value="WGS84">WGS84</option>
+            <option value="GCJ-02">GCJ-02</option>
+            <option value="BD-09">BD-09</option>
+            <option value="UTM">UTM</option>
+          </select>
+        </label>
+      </div>
+      <div class="row triple">
+        <label>
+          <span>天气</span>
+          <input id="weather" name="weather" placeholder="晴">
+        </label>
+        <label>
+          <span>时间段</span>
+          <select id="time_of_day" name="time_of_day">
+            <option value="">请选择</option>
+            <option value="morning">morning</option>
+            <option value="afternoon">afternoon</option>
+            <option value="evening">evening</option>
+            <option value="night">night</option>
+          </select>
+        </label>
+        <label>
+          <span>事件</span>
+          <input id="event" name="event" placeholder="节假日 / 会展活动">
+        </label>
+      </div>
+      <label>
+        <span>偏好标签</span>
+        <input id="preferred_categories" name="preferred_categories" placeholder="亲子, 户外, 周末活动">
+      </label>
+      <div class="action-row">
+        <button class="submit" type="submit">异步运行 GEO 分析</button>
+        <span id="job-status-badge" class="chip hidden"></span>
+      </div>
+    </form>
+  </section>
+
+  <section class="panel result-panel">
+    <div class="panel-heading">
+      <h2>分析结果</h2>
+      <p>查看模型结论、推荐项、持久化记录和地图定位。</p>
+    </div>
+    <div id="result-empty" class="empty-state">提交一次请求后，这里会显示分析结果。</div>
+    <div id="result-content" class="result-content hidden">
+      <div class="chips">
+        <span id="result-model" class="chip"></span>
+        <span id="result-confidence" class="chip"></span>
+        <span id="result-record-id" class="chip"></span>
+      </div>
+      <article class="analysis-box">
+        <h3>模型分析</h3>
+        <p id="analysis-text"></p>
+      </article>
+      <section>
+        <h3>增强标签</h3>
+        <div id="tag-list" class="chips"></div>
+      </section>
+      <section>
+        <h3>推荐结果</h3>
+        <div id="recommendation-list" class="recommendations"></div>
+      </section>
+      <section>
+        <h3>地图视图</h3>
+        <div id="map"></div>
+      </section>
+    </div>
+  </section>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>最近分析记录</h2>
+    <p>这里展示最新持久化到数据库的请求记录。</p>
+  </div>
+  <div id="history-list" class="history-list"></div>
+</section>
+{% endblock %}

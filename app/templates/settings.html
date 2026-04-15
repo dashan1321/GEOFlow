@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}模型配置 | GEO 大模型优化工具{% endblock %}
+
+{% block content %}
+<section class="topbar compact">
+  <div>
+    <p class="eyebrow">Provider Status</p>
+    <h1>模型配置</h1>
+    <p class="lede">检查当前环境变量、模型名、接口地址和 mock 模式状态。</p>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>供应商状态</h2>
+    <p>这些信息来自后端运行时配置，便于联调前自检。</p>
+  </div>
+  <div id="provider-list" class="provider-list"></div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>建议配置项</h2>
+    <p>真实联调时优先填写下面这些环境变量。</p>
+  </div>
+  <div class="code-card">
+<pre><code>DEEPSEEK_USE_MOCK=false
+DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
+DEEPSEEK_API_KEY=your-key
+DEEPSEEK_MODEL_NAME=deepseek-chat
+
+DOUBAO_USE_MOCK=false
+DOUBAO_BASE_URL=https://ark.cn-beijing.volces.com/api/v3
+DOUBAO_API_KEY=your-key
+DOUBAO_MODEL_NAME=your-endpoint-or-model</code></pre>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}GEO 大模型优化工具{% endblock %}</title>
+    <link rel="preconnect" href="https://unpkg.com">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <a class="brand" href="{{ url_for('index') }}">
+          <span class="brand-mark">G</span>
+          <div>
+            <strong>GEO Optimizer</strong>
+            <span>LLM Control Room</span>
+          </div>
+        </a>
+        <nav class="nav">
+          <a class="nav-link {% if page == 'dashboard' %}active{% endif %}" href="{{ url_for('index') }}">仪表盘</a>
+          <a class="nav-link {% if page == 'history' %}active{% endif %}" href="{{ url_for('history_page') }}">分析历史</a>
+          <a class="nav-link {% if page == 'settings' %}active{% endif %}" href="{{ url_for('settings_page') }}">模型配置</a>
+          {% if current_user.role == 'admin' %}
+          <a class="nav-link {% if page == 'jobs' %}active{% endif %}" href="{{ url_for('jobs_page') }}">任务监控</a>
+          <a class="nav-link {% if page == 'users' %}active{% endif %}" href="{{ url_for('users_page') }}">用户管理</a>
+          <a class="nav-link {% if page == 'audit' %}active{% endif %}" href="{{ url_for('audit_page') }}">审计日志</a>
+          {% endif %}
+        </nav>
+        <div class="sidebar-foot">
+          <span>默认模型</span>
+          <strong>{{ default_model }}</strong>
+          {% if current_user.username %}
+          <div class="sidebar-user">
+            <span>{{ current_user.username }}</span>
+            <strong>{{ current_user.role }}</strong>
+          </div>
+          {% endif %}
+          {% if authenticated %}
+          <form method="post" action="{{ url_for('logout') }}" class="logout-form">
+            <button class="secondary-button logout-button" type="submit">退出登录</button>
+          </form>
+          {% endif %}
+        </div>
+      </aside>
+      <main class="main">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

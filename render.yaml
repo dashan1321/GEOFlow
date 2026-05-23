@@ -1,0 +1,198 @@
+services:
+  - type: web
+    name: geoflow-web
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile.render
+    healthCheckPath: /
+    envVars:
+      - key: APP_NAME
+        value: GEOFlow
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: false
+      - key: TRUSTED_PROXIES
+        value: "*"
+      - key: BOOST_BROWSER_LOGS_WATCHER
+        value: false
+      - key: APP_TIMEZONE
+        value: Asia/Shanghai
+      - key: APP_LOCALE
+        value: zh_CN
+      - key: APP_FALLBACK_LOCALE
+        value: en
+      - key: GEOFLOW_PUBLIC_LOCALE
+        value: zh_CN
+      - key: ADMIN_BASE_PATH
+        value: geo_admin
+      - key: GEOFLOW_ADMIN_USERNAME
+        value: admin
+      - key: GEOFLOW_ADMIN_EMAIL
+        value: admin@example.com
+      - key: GEOFLOW_ADMIN_PASSWORD
+        sync: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        fromDatabase:
+          name: geoflow-postgres
+          property: connectionString
+      - key: DB_SSLMODE
+        value: require
+      - key: CACHE_STORE
+        value: database
+      - key: SESSION_DRIVER
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: BROADCAST_CONNECTION
+        value: "null"
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: warning
+      - key: AUTO_WAIT_FOR_DB
+        value: true
+      - key: AUTO_MIGRATE
+        value: true
+      - key: AUTO_SEED
+        value: true
+      - key: AUTO_OPTIMIZE
+        value: true
+
+  - type: worker
+    name: geoflow-queue
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile.render
+    dockerCommand: deploy/render/artisan.sh queue:work database --queue=geoflow,distribution,default --sleep=1 --tries=1 --timeout=300
+    envVars:
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: APP_KEY
+        key: APP_KEY
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: APP_NAME
+        key: APP_NAME
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: APP_ENV
+        key: APP_ENV
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: APP_DEBUG
+        key: APP_DEBUG
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: DB_CONNECTION
+        key: DB_CONNECTION
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: DB_URL
+        key: DB_URL
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: DB_SSLMODE
+        key: DB_SSLMODE
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: CACHE_STORE
+        key: CACHE_STORE
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: SESSION_DRIVER
+        key: SESSION_DRIVER
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: QUEUE_CONNECTION
+        key: QUEUE_CONNECTION
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: BROADCAST_CONNECTION
+        key: BROADCAST_CONNECTION
+
+  - type: cron
+    name: geoflow-scheduler
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile.render
+    schedule: "* * * * *"
+    dockerCommand: deploy/render/artisan.sh schedule:run --no-interaction
+    envVars:
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: APP_KEY
+        key: APP_KEY
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: APP_NAME
+        key: APP_NAME
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: APP_ENV
+        key: APP_ENV
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: APP_DEBUG
+        key: APP_DEBUG
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: DB_CONNECTION
+        key: DB_CONNECTION
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: DB_URL
+        key: DB_URL
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: DB_SSLMODE
+        key: DB_SSLMODE
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: CACHE_STORE
+        key: CACHE_STORE
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: SESSION_DRIVER
+        key: SESSION_DRIVER
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: QUEUE_CONNECTION
+        key: QUEUE_CONNECTION
+      - fromService:
+          type: web
+          name: geoflow-web
+          envVarKey: BROADCAST_CONNECTION
+        key: BROADCAST_CONNECTION
+
+databases:
+  - name: geoflow-postgres
+    plan: starter
+    databaseName: geoflow
+    user: geoflow
+    postgresMajorVersion: "16"

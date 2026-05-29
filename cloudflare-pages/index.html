@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="GEOFlow 是面向 GEO 内容工程、AI 任务、RAG 材料和多站点分发的开源系统。" />
+    <title>GEOFlow - GEO 内容工程与多站点分发系统</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./"><span>G</span>GEOFlow</a>
+      <nav>
+        <a href="#features">能力</a>
+        <a href="#deploy">部署</a>
+        <a class="button small" href="https://github.com/dashan1321/GEOFlow">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">开源 GEO 内容工程系统</p>
+          <h1>把知识库、AI 生成、审核发布和多站点分发接成一条运营链路。</h1>
+          <p class="lede">
+            GEOFlow 面向生成式引擎优化场景，帮助团队管理可信材料、配置模型任务、生成内容资产，并将结果同步到多个站点渠道。
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/dashan1321/GEOFlow">查看源码</a>
+            <a class="button secondary" href="#deploy">部署说明</a>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <p class="panel-title">Cloudflare Pages 静态入口</p>
+          <dl>
+            <div><dt>内容生产</dt><dd>AI 任务、提示词、素材库、知识库</dd></div>
+            <div><dt>发布流程</dt><dd>草稿、审核、发布、数据分析</dd></div>
+            <div><dt>分发能力</dt><dd>目标站点包、WordPress、远端静态页面</dd></div>
+          </dl>
+        </aside>
+      </section>
+
+      <section id="features" class="section">
+        <p class="eyebrow">核心能力</p>
+        <h2>为 GEO 运营准备的完整工作台</h2>
+        <div class="grid">
+          <article><h3>RAG 材料管理</h3><p>沉淀知识库、素材、标题、关键词和提示词，让内容生成围绕真实资料展开。</p></article>
+          <article><h3>多模型任务</h3><p>支持 OpenAI 风格接口，围绕生成、审核、发布和重试形成可执行任务流。</p></article>
+          <article><h3>多站点分发</h3><p>将文章、静态页面、sitemap 和目标站点资源同步到不同渠道。</p></article>
+        </div>
+      </section>
+
+      <section id="deploy" class="section deploy">
+        <div>
+          <p class="eyebrow">当前部署</p>
+          <h2>Cloudflare Pages 免费托管这个静态入口页</h2>
+          <p>
+            完整 GEOFlow 后台是 Laravel/PHP 应用，需要 PHP 运行时、PostgreSQL、队列和常驻任务。
+            Cloudflare Pages 不运行 PHP 后端，因此后台本体需要部署到支持容器或 PHP 的服务。
+          </p>
+        </div>
+        <div class="settings">
+          <strong>Cloudflare Pages 设置</strong>
+          <code>Build command: 留空</code>
+          <code>Build output directory: cloudflare-pages</code>
+          <code>Branch: main</code>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Apache-2.0</span>
+      <span>GEOFlow</span>
+      <a href="https://github.com/dashan1321/GEOFlow">GitHub Repository</a>
+    </footer>
+  </body>
+</html>

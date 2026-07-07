@@ -64,6 +64,24 @@ https://geoflow-bp2.pages.dev/llms.txt -> 404
 
 判断：当前 Cloudflare Pages 项目未绑定 `dashan1321/GEOFlow` 的 `codex/release-ready` 分支，或未触发该分支构建。
 
+### 4. 浏览器接管部署卡在账号认证
+
+用户要求 Codex 自行操作后，已打开 Cloudflare Pages 的 GitHub provider 部署入口：
+
+```text
+https://dash.cloudflare.com/?to=/:account/pages/new/provider/github
+```
+
+实际跳转到 Cloudflare 登录页，选择“使用 GitHub 继续”后进入 GitHub 登录页：
+
+```text
+https://github.com/login?...Cloudflare OAuth...
+```
+
+当前页面要求输入 GitHub 账号密码或使用 passkey。Codex 无法绕过账号认证，也不能替用户输入未知密码或验证码。
+
+下一步：用户在 Chrome 中完成 GitHub 登录 / passkey / 2FA 后，Codex 可以继续接管 Cloudflare Pages 配置与部署。
+
 ## 下一步选项
 
 ### 方案 A：提供 Cloudflare API Token

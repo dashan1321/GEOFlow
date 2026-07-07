@@ -1,4 +1,4 @@
-# Cloudflare Pages 部署尝试记录
+# Cloudflare Pages 部署与验证记录
 
 ## 时间
 
@@ -84,7 +84,62 @@ https://github.com/login?...Cloudflare OAuth...
 
 ## 下一步选项
 
-### 方案 A：提供 Cloudflare API Token
+### 已执行：Wrangler OAuth 直传部署
+
+用户完成 GitHub 设备验证后，Codex 使用浏览器完成 Cloudflare 登录，并通过 Wrangler OAuth 授权：
+
+```text
+npx wrangler login
+```
+
+随后执行预览分支部署：
+
+```text
+npx wrangler pages deploy cf-pages --project-name geoflow
+```
+
+输出：
+
+```text
+Deployment complete! Take a peek over at https://b1b38520.geoflow-bp2.pages.dev
+Deployment alias URL: https://codex-release-ready.geoflow-bp2.pages.dev
+```
+
+该分支预览会自动带 `x-robots-tag: noindex`，因此继续执行生产分支部署：
+
+```text
+npx wrangler pages deploy cf-pages --project-name geoflow --branch main
+```
+
+输出：
+
+```text
+Deployment complete! Take a peek over at https://f024fdf9.geoflow-bp2.pages.dev
+```
+
+## 正式 URL 验证
+
+```text
+https://geoflow-bp2.pages.dev/huangshan-ai-geo -> HTTP/2 200
+https://geoflow-bp2.pages.dev/llms.txt -> HTTP/2 200
+https://geoflow-bp2.pages.dev/sitemap.xml -> HTTP/2 200
+```
+
+页面正文已确认包含：
+
+```text
+黄山 AI 搜索优化 / GEO 优化服务
+GEOFlow 黄山 AI 搜索优化
+豆包、Kimi、DeepSeek、百度 AI、秘塔
+```
+
+## 下一步
+
+- 使用正式 URL 做豆包、Kimi、DeepSeek、百度 AI、秘塔第一轮基线测试。
+- 把正式 URL 放入公众号、朋友圈、小红书、抖音、知乎简介或内容入口。
+- 后续如果要让 GitHub push 自动部署，需要在 Cloudflare Pages 里完成 GitHub App 仓库授权。
+
+## 备选方案 A：提供 Cloudflare API Token
 
 在当前 shell 设置：
 
@@ -98,7 +153,7 @@ CLOUDFLARE_API_TOKEN=...
 npx wrangler pages deploy cf-pages --project-name geoflow
 ```
 
-### 方案 B：Cloudflare Pages 绑定 GitHub fork
+## 备选方案 B：Cloudflare Pages 绑定 GitHub fork
 
 在 Cloudflare Pages 项目 `geoflow` 里配置：
 

@@ -33,6 +33,7 @@
 | `outputs/2026-07-07-first-7-days-content-pack-v01.md` | 前 7 天可发布内容包 | 已生成 |
 | `logs/2026-07-07-weekly-ai-search-ranking-log.md` | 每周 AI 搜索榜记录表 | 已生成 |
 | `logs/2026-07-07-local-landing-page-publish-log.md` | 本地应用落地页接入记录 | 已生成 |
+| `logs/2026-07-07-cloudflare-pages-deploy-attempt.md` | Cloudflare Pages 部署尝试记录 | 已生成 |
 
 ## 目录说明
 
@@ -52,6 +53,8 @@
 - [x] 归档原始需求到 `brief/`。
 - [x] 生成第一批执行资产。
 - [x] 把落地页文案发布到本地 GEOFlow 应用公开页面。
+- [x] 生成 Cloudflare Pages 静态版并推送到 GitHub fork。
+- [ ] 配置 Cloudflare Pages 自动部署或提供 `CLOUDFLARE_API_TOKEN` 直传。
 - [ ] 按问题词表完成第一轮豆包、Kimi、DeepSeek、百度 AI、秘塔测试。
 - [ ] 连续 7 天发布第一批内容，并记录是否被 AI 搜索识别。
 - [ ] 把品牌实体资料同步到公众号、抖音、小红书、知乎、视频号等平台。
@@ -71,4 +74,11 @@
 记录：新增本地公开页面 /huangshan-ai-geo，并加入 llms.txt 与 sitemap.xml。
 影响：黄山 AI 搜索优化服务已有可访问的本地落地页入口，可继续部署到公开域名。
 下一步：部署上线后提交收录入口，并开始 AI 搜索基线测试。
+```
+
+```text
+日期：2026-07-07
+记录：新增 Cloudflare Pages 静态版 `cf-pages/huangshan-ai-geo.html`、`llms.txt`、`sitemap.xml`，提交并推送到 `dashan1321/GEOFlow` 的 `codex/release-ready` 分支。
+影响：代码已到 GitHub fork，但 `geoflow-bp2.pages.dev` 暂未出现新页面；Wrangler 直传因缺少 `CLOUDFLARE_API_TOKEN` 被 Cloudflare 拦截。
+下一步：在 Cloudflare Pages 绑定该 fork/分支，或提供 API Token 后用 Wrangler 直接部署。
 ```

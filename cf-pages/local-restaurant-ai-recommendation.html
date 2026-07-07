@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="本地餐饮如何提升在豆包、DeepSeek 等 AI 助手中的推荐机会：从游客提问、菜品语义、口碑证据到30天行动路线。">
+    <meta name="theme-color" content="#be123c">
+    <title>本地餐饮如何被豆包推荐？ | GEO 可视化诊断</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      :root {
+        --ink: #201314;
+        --muted: #735f62;
+        --line: #eadbdd;
+        --primary: #be123c;
+        --primary-dark: #881337;
+        --accent: #d97706;
+        --paper: #fff7f8;
+        --soft: #fff1f2;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+      a, button { transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+      a:focus-visible, button:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 45%, transparent); outline-offset: 3px; }
+      .report-shell {
+        background:
+          linear-gradient(180deg, rgba(255,255,255,.94), color-mix(in srgb, var(--paper) 88%, white)),
+          radial-gradient(circle at top left, color-mix(in srgb, var(--primary) 15%, transparent), transparent 28rem);
+      }
+      .glass {
+        background: rgba(255,255,255,.88);
+        border: 1px solid color-mix(in srgb, var(--line) 92%, white);
+        box-shadow: 0 24px 80px rgba(16, 24, 32, .08);
+        backdrop-filter: blur(16px);
+      }
+      .metric-bar span {
+        display: block;
+        height: .65rem;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, white));
+      }
+      .node-line::after {
+        position: absolute;
+        right: -2.3rem;
+        top: 50%;
+        width: 2.3rem;
+        height: 1px;
+        content: "";
+        background: var(--line);
+      }
+      .route-dot { box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 10%, transparent); }
+      .print-grid {
+        background-image:
+          linear-gradient(color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px),
+          linear-gradient(90deg, color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px);
+        background-size: 28px 28px;
+      }
+      @media (max-width: 900px) { .node-line::after { display: none; } }
+      @supports not (color: color-mix(in srgb, red, white)) {
+        a:focus-visible, button:focus-visible { outline-color: rgba(15, 118, 110, .45); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="report-shell min-h-screen">
+      <header class="sticky top-0 z-30 border-b border-[var(--line)] bg-white/90 backdrop-blur">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-8">
+          <a href="./" class="flex items-center gap-3" aria-label="返回首页">
+            <span class="grid h-10 w-10 place-items-center rounded-lg bg-[var(--primary)] text-sm font-black text-white">徽</span>
+            <span class="text-base font-black tracking-normal text-[var(--primary-dark)]">数字徽州 GEO</span>
+          </a>
+          <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex" aria-label="页面导航">
+            <a href="#dashboard" class="hover:text-[var(--primary)]">诊断</a>
+            <a href="#path" class="hover:text-[var(--primary)]">推荐路径</a>
+            <a href="#roadmap" class="hover:text-[var(--primary)]">行动路线</a>
+            <a href="#contact" class="rounded-lg border border-[var(--line)] px-4 py-2 text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--soft)]">领取诊断</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section class="mx-auto grid max-w-7xl gap-10 px-5 py-12 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-20">
+          <div class="flex flex-col justify-center">
+            <p class="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-[var(--line)] bg-white px-3 py-1 text-sm font-bold text-[var(--primary-dark)]">
+              <i data-lucide="sparkles" class="h-4 w-4" aria-hidden="true"></i>
+              本地餐饮 AI 推荐可见度方案
+            </p>
+            <h1 class="max-w-4xl text-4xl font-black leading-tight tracking-normal text-slate-950 sm:text-5xl lg:text-6xl">本地餐饮如何被豆包推荐？</h1>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">当用户问“黄山哪家徽菜好吃”“屯溪老街适合家庭聚餐的餐厅”“附近有什么本地特色菜”时，AI 助手会把位置、菜品、评价、场景和可信内容组合成推荐答案。餐饮店要做的不是只发菜单，而是让 AI 看懂你适合谁、凭什么推荐、到店体验是否可信。</p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#roadmap" class="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--primary)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-slate-900/10 hover:-translate-y-0.5 hover:bg-[var(--primary-dark)]">
+                <i data-lucide="route" class="h-4 w-4" aria-hidden="true"></i>查看30天路线
+              </a>
+              <a href="#dashboard" class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[var(--line)] bg-white px-5 py-3 text-sm font-bold text-[var(--primary-dark)] hover:-translate-y-0.5 hover:border-[var(--primary)]">
+                <i data-lucide="bar-chart-3" class="h-4 w-4" aria-hidden="true"></i>看诊断指标
+              </a>
+            </div>
+          </div>
+
+          <aside class="glass overflow-hidden rounded-xl" aria-label="本地餐饮 AI 推荐模型示意">
+            <div class="print-grid min-h-[420px] p-6 sm:p-8">
+              <div class="rounded-xl bg-slate-950 p-5 text-white shadow-2xl shadow-slate-900/20">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-bold" style="color: color-mix(in srgb, var(--primary) 35%, white)">用户正在问豆包</p>
+                    <p class="mt-2 text-xl font-black">黄山附近哪家徽菜馆适合带朋友吃？</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-white text-[var(--primary)]">
+                    <i data-lucide="utensils" class="h-5 w-5" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-xl border border-white bg-white/90 p-4">
+                  <p class="text-xs font-black uppercase text-[var(--primary)]">AI 需要看懂</p>
+                  <ul class="mt-3 space-y-2 text-sm font-semibold text-slate-700"><li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>招牌菜和人均价格</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>适合聚餐或游客打卡</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>营业时间和停车</li></ul>
+                </div>
+                <div class="rounded-xl border border-white bg-white/90 p-4">
+                  <p class="text-xs font-black uppercase text-[var(--accent)]">AI 需要信任</p>
+                  <ul class="mt-3 space-y-2 text-sm font-semibold text-slate-700"><li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>点评评价真实</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>菜单图片清楚</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>地图信息一致</li></ul>
+                </div>
+              </div>
+              <div class="mt-6 rounded-xl bg-white p-5">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-black text-slate-950">推荐概率提升抓手</p>
+                    <p class="mt-1 text-sm text-[var(--muted)]">语义内容 + 本地证据 + 场景问答</p>
+                  </div>
+                  <span class="rounded-lg bg-[var(--soft)] px-3 py-2 text-sm font-black text-[var(--primary-dark)]">GEO</span>
+                </div>
+                <div class="mt-5 space-y-4">
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>内容可理解度</span><span>68%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:68%"></span></div></div>
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>场景覆盖度</span><span>47%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:47%"></span></div></div>
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>本地信任证据</span><span>59%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:59%"></span></div></div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="dashboard" class="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+          <div class="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+            <div>
+              <p class="text-sm font-black text-[var(--primary)]">AI VISIBILITY DASHBOARD</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">本地餐饮被 AI 推荐前，先看这四个指标</h2>
+            </div>
+            <p class="max-w-xl text-base leading-7 text-[var(--muted)]">以下是做行业 GEO 诊断时常用的指标模型。真实诊断需要结合官网、地图、平台内容、用户评价和 AI 实测结果。</p>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">AI 可见度</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">35</p>
+                </div>
+                <i data-lucide="radar" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">AI 能否识别餐厅名称、位置、菜系、招牌菜和适合场景。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">菜品语义覆盖</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">49</p>
+                </div>
+                <i data-lucide="utensils" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">是否讲清徽菜、土菜、私房菜、家庭聚餐、游客打卡等场景。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">本地口碑证据</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">62</p>
+                </div>
+                <i data-lucide="badge-check" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">地图、点评、短视频、公众号、官网内容是否能互相印证。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">到店转化信号</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">41</p>
+                </div>
+                <i data-lucide="map-pin" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">是否明确回答排队、停车、包厢、预约、人均、营业时间。</p>
+            </article></div>
+          <div class="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <article class="glass rounded-xl p-5">
+              <div class="mb-4 flex items-center justify-between gap-4">
+                <h3 class="text-lg font-black text-slate-950">推荐能力雷达</h3>
+                <span class="rounded-lg bg-[var(--soft)] px-3 py-1 text-xs font-black text-[var(--primary-dark)]">示例模型</span>
+              </div>
+              <div class="min-h-[310px]"><canvas id="radarChart" aria-label="推荐能力雷达图" role="img"></canvas></div>
+            </article>
+            <article class="glass rounded-xl p-5">
+              <div class="mb-4 flex items-center justify-between gap-4">
+                <h3 class="text-lg font-black text-slate-950">高频提问场景</h3>
+                <span class="rounded-lg bg-amber-50 px-3 py-1 text-xs font-black text-amber-800">优先补内容</span>
+              </div>
+              <div class="min-h-[310px]"><canvas id="intentChart" aria-label="高频提问场景柱状图" role="img"></canvas></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="path" class="mx-auto max-w-7xl px-5 py-14 lg:px-8">
+          <div class="glass rounded-xl p-6 sm:p-8">
+            <div class="mb-8 max-w-3xl">
+              <p class="text-sm font-black text-[var(--primary)]">HOW AI MAY RECOMMEND</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">AI 推荐餐厅时，通常会经历四步</h2>
+              <p class="mt-4 text-base leading-7 text-[var(--muted)]">这不是任何平台内部算法承诺，而是 AI 问答系统常见的信息组织逻辑：先理解吃饭场景，再寻找可信餐厅内容，最后组合推荐理由。</p>
+            </div>
+            <div class="grid gap-4 lg:grid-cols-4">
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">1</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">识别吃饭场景</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">用户问的不是“餐厅”本身，而是游客、本地聚餐、家庭、商务、打卡、口味和预算。</p>
+              </article>
+
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">2</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">抓取可信内容</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">地图、点评、菜单、短视频、公众号、真实评价越一致，AI 越容易引用。</p>
+              </article>
+
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">3</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">比较候选餐厅</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">AI 会按距离、菜品、口碑、人均、环境、服务和预约便利度排序。</p>
+              </article>
+
+              <article class=" rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--accent)">4</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">生成推荐理由</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">谁的信息更清楚、证据更完整，谁就更像一个可以被推荐的答案。</p>
+              </article></div>
+          </div>
+        </section>
+
+        <section class="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+          <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p class="text-sm font-black text-[var(--primary)]">CONTENT SYSTEM</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">餐饮店最该补的，是“可被 AI 引用的到店理由”</h2>
+              <p class="mt-4 text-base leading-7 text-[var(--muted)]">AI 不会只看一句“正宗徽菜”。它更需要结构化理由：招牌菜是什么、适合什么人、在哪里、怎么订、用户为什么认可。</p>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="utensils" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">招牌菜答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">臭鳜鱼、毛豆腐、笋干烧肉等菜品的口味、分量、适合人群和图片。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="users" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">场景答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">游客打卡、家庭聚餐、商务宴请、情侣约会、朋友小聚分别怎么推荐。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="clock" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">到店答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">营业时间、停车、包厢、预约、排队、人均价格、离景点距离。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="star" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">信任答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">真实评价、老板故事、食材来源、老店年限、荣誉和用户照片。</p>
+              </article></div>
+          </div>
+        </section>
+
+        <section id="roadmap" class="mx-auto max-w-7xl px-5 py-14 lg:px-8">
+          <div class="mb-8 max-w-3xl">
+            <p class="text-sm font-black text-[var(--primary)]">30-DAY GEO ROADMAP</p>
+            <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">30天让本地餐饮更容易被 AI 识别</h2>
+          </div>
+          <div class="grid gap-5 lg:grid-cols-3">
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-[var(--soft)] text-[var(--primary-dark)] px-3 py-2 text-sm font-black">第 1-7 天</span>
+              <h3 class="mt-5 text-2xl font-black">修好基础信息</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>统一地图、点评、短视频平台的店名、地址、电话</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>整理菜单、招牌菜、人均、营业时间和停车信息</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>官网或单页写清“适合谁来吃”</li>
+              </ul>
+            </article>
+
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-[var(--soft)] text-[var(--primary-dark)] px-3 py-2 text-sm font-black">第 8-14 天</span>
+              <h3 class="mt-5 text-2xl font-black">生产场景内容</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>发布 6 篇问答内容：游客、家庭、包厢、徽菜、停车、预算</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>每篇内容都给出推荐理由和不适合人群</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>补真实菜品图、店内图、路线图</li>
+              </ul>
+            </article>
+
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-amber-50 text-amber-800 px-3 py-2 text-sm font-black">第 15-30 天</span>
+              <h3 class="mt-5 text-2xl font-black">建立口碑闭环</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>整理高质量评价，形成“顾客怎么说”专题</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>把菜单、评价、路线、预约入口做成结构化内容</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>每周测试豆包、DeepSeek、Kimi 是否提到店名</li>
+              </ul>
+            </article></div>
+        </section>
+
+        <section id="contact" class="mx-auto max-w-7xl px-5 pb-16 pt-8 lg:px-8 lg:pb-24">
+          <div class="grid gap-6 rounded-2xl bg-slate-950 p-6 text-white sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <p class="text-sm font-black" style="color: color-mix(in srgb, var(--primary) 35%, white)">FREE GEO CHECK</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal sm:text-4xl">想知道你的餐厅能不能被 AI 推荐？</h2>
+              <p class="mt-4 max-w-3xl text-base leading-7 text-slate-300">提供店名、地图链接或点评链接，我们可以做一次 AI 可见度诊断：看豆包、DeepSeek、Kimi 是否能识别你的餐厅，以及最该补哪些内容。</p>
+            </div>
+            <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <a href="tel:15655931530" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-black text-slate-950 hover:-translate-y-0.5">
+                <i data-lucide="phone" class="h-4 w-4" aria-hidden="true"></i>电话咨询
+              </a>
+              <a href="./" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/20 px-5 py-3 text-sm font-black text-white hover:-translate-y-0.5 hover:bg-white/10">
+                <i data-lucide="home" class="h-4 w-4" aria-hidden="true"></i>返回数字徽州
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="border-t border-[var(--line)] bg-white">
+        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-sm text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <span>© 2026 数字徽州 · GEO 可视化内容</span>
+          <span>面向本地餐饮的 AI 推荐优化示例页</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const chartData = {"radarLabels": ["位置清晰", "招牌菜", "评价证据", "菜单图片", "场景问答", "营业信息"], "current": [64, 52, 61, 45, 38, 58], "target": [86, 84, 82, 78, 82, 88], "intentLabels": ["徽菜", "家庭聚餐", "游客打卡", "包厢", "停车", "夜宵"], "intentValues": [86, 78, 72, 65, 58, 46], "primary": "#be123c", "accent": "#d97706"};
+      function safeQuerySelector(selector) {
+        try {
+          return document.querySelector(selector);
+        } catch (error) {
+          console.error("选择器错误：", selector, error);
+          return null;
+        }
+      }
+      function createCharts() {
+        if (!window.Chart) { return; }
+        const radarCanvas = safeQuerySelector("#radarChart");
+        const intentCanvas = safeQuerySelector("#intentChart");
+        if (radarCanvas) {
+          new Chart(radarCanvas, {
+            type: "radar",
+            data: {
+              labels: chartData.radarLabels,
+              datasets: [
+                {
+                  label: "当前基础",
+                  data: chartData.current,
+                  borderColor: chartData.primary,
+                  backgroundColor: "rgba(15, 118, 110, 0.14)",
+                  pointBackgroundColor: chartData.primary,
+                  pointBorderColor: "#ffffff",
+                  pointRadius: 4
+                },
+                {
+                  label: "优化目标",
+                  data: chartData.target,
+                  borderColor: chartData.accent,
+                  backgroundColor: "rgba(217, 119, 6, 0.08)",
+                  pointBackgroundColor: chartData.accent,
+                  pointBorderColor: "#ffffff",
+                  pointRadius: 4
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { labels: { color: "#334155", font: { weight: "700" } } } },
+              scales: {
+                r: {
+                  min: 0,
+                  max: 100,
+                  ticks: { display: false },
+                  grid: { color: "rgba(15, 23, 42, 0.1)" },
+                  angleLines: { color: "rgba(15, 23, 42, 0.08)" },
+                  pointLabels: { color: "#334155", font: { size: 12, weight: "700" } }
+                }
+              }
+            }
+          });
+        }
+        if (intentCanvas) {
+          new Chart(intentCanvas, {
+            type: "bar",
+            data: {
+              labels: chartData.intentLabels,
+              datasets: [{
+                label: "提问热度",
+                data: chartData.intentValues,
+                backgroundColor: chartData.intentValues.map((_, index) => index < 3 ? chartData.primary : (index < 5 ? "#14b8a6" : chartData.accent)),
+                borderRadius: 8,
+                maxBarThickness: 42
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: function(context) { return "建议优先级：" + context.raw + "/100"; } } }
+              },
+              scales: {
+                x: { grid: { display: false }, ticks: { color: "#334155", font: { weight: "700" } } },
+                y: { beginAtZero: true, max: 100, grid: { color: "rgba(15, 23, 42, 0.08)" }, ticks: { color: "#64748b" } }
+              }
+            }
+          });
+        }
+      }
+      document.addEventListener("DOMContentLoaded", function() {
+        try {
+          if (window.lucide) { window.lucide.createIcons(); }
+          createCharts();
+        } catch (error) {
+          console.error("页面初始化失败：", error);
+        }
+      });
+    </script>
+  </body>
+</html>

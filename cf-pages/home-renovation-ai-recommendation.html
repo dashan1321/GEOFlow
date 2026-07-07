@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="装修公司如何提升在 AI 问答中的本地推荐机会：从业主需求、案例证据、报价信任到30天内容路线图。">
+    <meta name="theme-color" content="#4f46e5">
+    <title>装修公司如何被豆包推荐？ | GEO 可视化诊断</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      :root {
+        --ink: #141827;
+        --muted: #62677a;
+        --line: #dfe3f0;
+        --primary: #4f46e5;
+        --primary-dark: #312e81;
+        --accent: #0f766e;
+        --paper: #f8f9ff;
+        --soft: #eef2ff;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+      a, button { transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+      a:focus-visible, button:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 45%, transparent); outline-offset: 3px; }
+      .report-shell {
+        background:
+          linear-gradient(180deg, rgba(255,255,255,.94), color-mix(in srgb, var(--paper) 88%, white)),
+          radial-gradient(circle at top left, color-mix(in srgb, var(--primary) 15%, transparent), transparent 28rem);
+      }
+      .glass {
+        background: rgba(255,255,255,.88);
+        border: 1px solid color-mix(in srgb, var(--line) 92%, white);
+        box-shadow: 0 24px 80px rgba(16, 24, 32, .08);
+        backdrop-filter: blur(16px);
+      }
+      .metric-bar span {
+        display: block;
+        height: .65rem;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, white));
+      }
+      .node-line::after {
+        position: absolute;
+        right: -2.3rem;
+        top: 50%;
+        width: 2.3rem;
+        height: 1px;
+        content: "";
+        background: var(--line);
+      }
+      .route-dot { box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 10%, transparent); }
+      .print-grid {
+        background-image:
+          linear-gradient(color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px),
+          linear-gradient(90deg, color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px);
+        background-size: 28px 28px;
+      }
+      @media (max-width: 900px) { .node-line::after { display: none; } }
+      @supports not (color: color-mix(in srgb, red, white)) {
+        a:focus-visible, button:focus-visible { outline-color: rgba(15, 118, 110, .45); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="report-shell min-h-screen">
+      <header class="sticky top-0 z-30 border-b border-[var(--line)] bg-white/90 backdrop-blur">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-8">
+          <a href="./" class="flex items-center gap-3" aria-label="返回首页">
+            <span class="grid h-10 w-10 place-items-center rounded-lg bg-[var(--primary)] text-sm font-black text-white">徽</span>
+            <span class="text-base font-black tracking-normal text-[var(--primary-dark)]">数字徽州 GEO</span>
+          </a>
+          <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex" aria-label="页面导航">
+            <a href="#dashboard" class="hover:text-[var(--primary)]">诊断</a>
+            <a href="#path" class="hover:text-[var(--primary)]">推荐路径</a>
+            <a href="#roadmap" class="hover:text-[var(--primary)]">行动路线</a>
+            <a href="#contact" class="rounded-lg border border-[var(--line)] px-4 py-2 text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--soft)]">领取诊断</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section class="mx-auto grid max-w-7xl gap-10 px-5 py-12 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-20">
+          <div class="flex flex-col justify-center">
+            <p class="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-[var(--line)] bg-white px-3 py-1 text-sm font-bold text-[var(--primary-dark)]">
+              <i data-lucide="sparkles" class="h-4 w-4" aria-hidden="true"></i>
+              装修公司 AI 推荐可见度方案
+            </p>
+            <h1 class="max-w-4xl text-4xl font-black leading-tight tracking-normal text-slate-950 sm:text-5xl lg:text-6xl">装修公司如何被豆包推荐？</h1>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">当业主问“合肥哪家装修公司靠谱”“老房翻新怎么选公司”“装修避坑找谁咨询”时，AI 会重点比较公司资质、真实案例、报价透明度、施工口碑和服务流程。装修公司要让 AI 看懂你的能力边界、案例证据和可信承诺。</p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#roadmap" class="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--primary)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-slate-900/10 hover:-translate-y-0.5 hover:bg-[var(--primary-dark)]">
+                <i data-lucide="route" class="h-4 w-4" aria-hidden="true"></i>查看30天路线
+              </a>
+              <a href="#dashboard" class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[var(--line)] bg-white px-5 py-3 text-sm font-bold text-[var(--primary-dark)] hover:-translate-y-0.5 hover:border-[var(--primary)]">
+                <i data-lucide="bar-chart-3" class="h-4 w-4" aria-hidden="true"></i>看诊断指标
+              </a>
+            </div>
+          </div>
+
+          <aside class="glass overflow-hidden rounded-xl" aria-label="装修公司 AI 推荐模型示意">
+            <div class="print-grid min-h-[420px] p-6 sm:p-8">
+              <div class="rounded-xl bg-slate-950 p-5 text-white shadow-2xl shadow-slate-900/20">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-bold" style="color: color-mix(in srgb, var(--primary) 35%, white)">用户正在问豆包</p>
+                    <p class="mt-2 text-xl font-black">合肥老房翻新找哪家装修公司靠谱？</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-white text-[var(--primary)]">
+                    <i data-lucide="hammer" class="h-5 w-5" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-xl border border-white bg-white/90 p-4">
+                  <p class="text-xs font-black uppercase text-[var(--primary)]">AI 需要看懂</p>
+                  <ul class="mt-3 space-y-2 text-sm font-semibold text-slate-700"><li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>户型和预算范围</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>真实案例和工艺</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>设计施工流程</li></ul>
+                </div>
+                <div class="rounded-xl border border-white bg-white/90 p-4">
+                  <p class="text-xs font-black uppercase text-[var(--accent)]">AI 需要信任</p>
+                  <ul class="mt-3 space-y-2 text-sm font-semibold text-slate-700"><li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>资质与合同</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>报价透明</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>业主评价</li></ul>
+                </div>
+              </div>
+              <div class="mt-6 rounded-xl bg-white p-5">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-black text-slate-950">推荐概率提升抓手</p>
+                    <p class="mt-1 text-sm text-[var(--muted)]">语义内容 + 本地证据 + 场景问答</p>
+                  </div>
+                  <span class="rounded-lg bg-[var(--soft)] px-3 py-2 text-sm font-black text-[var(--primary-dark)]">GEO</span>
+                </div>
+                <div class="mt-5 space-y-4">
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>内容可理解度</span><span>68%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:68%"></span></div></div>
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>场景覆盖度</span><span>47%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:47%"></span></div></div>
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>本地信任证据</span><span>59%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:59%"></span></div></div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="dashboard" class="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+          <div class="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+            <div>
+              <p class="text-sm font-black text-[var(--primary)]">AI VISIBILITY DASHBOARD</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">装修公司被 AI 推荐前，先看这四个指标</h2>
+            </div>
+            <p class="max-w-xl text-base leading-7 text-[var(--muted)]">以下是做行业 GEO 诊断时常用的指标模型。真实诊断需要结合官网、地图、平台内容、用户评价和 AI 实测结果。</p>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">AI 可见度</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">31</p>
+                </div>
+                <i data-lucide="radar" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">AI 能否识别公司服务城市、装修类型、案例和联系方式。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">案例内容覆盖</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">44</p>
+                </div>
+                <i data-lucide="image" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">是否覆盖老房翻新、新房整装、局改、别墅、办公室等需求。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">信任证据强度</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">57</p>
+                </div>
+                <i data-lucide="badge-check" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">合同、资质、工地、报价、售后和评价是否可核验。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">咨询转化信号</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">39</p>
+                </div>
+                <i data-lucide="clipboard-check" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">是否明确回答预算、周期、流程、避坑、报价和预约量房。</p>
+            </article></div>
+          <div class="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <article class="glass rounded-xl p-5">
+              <div class="mb-4 flex items-center justify-between gap-4">
+                <h3 class="text-lg font-black text-slate-950">推荐能力雷达</h3>
+                <span class="rounded-lg bg-[var(--soft)] px-3 py-1 text-xs font-black text-[var(--primary-dark)]">示例模型</span>
+              </div>
+              <div class="min-h-[310px]"><canvas id="radarChart" aria-label="推荐能力雷达图" role="img"></canvas></div>
+            </article>
+            <article class="glass rounded-xl p-5">
+              <div class="mb-4 flex items-center justify-between gap-4">
+                <h3 class="text-lg font-black text-slate-950">高频提问场景</h3>
+                <span class="rounded-lg bg-amber-50 px-3 py-1 text-xs font-black text-amber-800">优先补内容</span>
+              </div>
+              <div class="min-h-[310px]"><canvas id="intentChart" aria-label="高频提问场景柱状图" role="img"></canvas></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="path" class="mx-auto max-w-7xl px-5 py-14 lg:px-8">
+          <div class="glass rounded-xl p-6 sm:p-8">
+            <div class="mb-8 max-w-3xl">
+              <p class="text-sm font-black text-[var(--primary)]">HOW AI MAY RECOMMEND</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">AI 推荐装修公司时，通常会经历四步</h2>
+              <p class="mt-4 text-base leading-7 text-[var(--muted)]">装修是高客单、强信任决策。AI 更容易推荐那些案例清楚、流程透明、风险解释充分、评价可核验的公司。</p>
+            </div>
+            <div class="grid gap-4 lg:grid-cols-4">
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">1</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">识别业主需求</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">用户会表达户型、预算、风格、翻新难点、交付时间和是否怕踩坑。</p>
+              </article>
+
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">2</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">抓取案例证据</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">官网案例、工地记录、报价说明、合同条款、评价内容会成为 AI 判断材料。</p>
+              </article>
+
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">3</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">比较服务能力</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">AI 会比较城市覆盖、设计能力、施工管理、报价透明、售后承诺。</p>
+              </article>
+
+              <article class=" rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--accent)">4</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">生成咨询建议</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">信息越具体，越容易被组织成“可以先咨询这家公司”的推荐理由。</p>
+              </article></div>
+          </div>
+        </section>
+
+        <section class="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+          <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p class="text-sm font-black text-[var(--primary)]">CONTENT SYSTEM</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">装修公司最该补的，是“可验证的案例资产”</h2>
+              <p class="mt-4 text-base leading-7 text-[var(--muted)]">装修客户不只想看效果图，更想知道预算、周期、工艺、施工过程和最终交付是否靠谱。</p>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="image" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">案例答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">户型、面积、预算、风格、工期、改造难点和前后对比。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="receipt-text" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">报价答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">半包、全包、整装、局改分别包含什么，哪些项目容易增项。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="workflow" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">流程答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">量房、设计、报价、签约、施工、验收、售后的完整流程。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="shield-check" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">信任答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">资质、合同、工地照片、业主评价、质保范围和交付记录。</p>
+              </article></div>
+          </div>
+        </section>
+
+        <section id="roadmap" class="mx-auto max-w-7xl px-5 py-14 lg:px-8">
+          <div class="mb-8 max-w-3xl">
+            <p class="text-sm font-black text-[var(--primary)]">30-DAY GEO ROADMAP</p>
+            <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">30天让装修公司更容易被 AI 识别</h2>
+          </div>
+          <div class="grid gap-5 lg:grid-cols-3">
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-[var(--soft)] text-[var(--primary-dark)] px-3 py-2 text-sm font-black">第 1-7 天</span>
+              <h3 class="mt-5 text-2xl font-black">整理可信资料</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>统一官网、地图、短视频平台的公司信息</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>整理 5 个真实案例，补预算、户型、周期和结果</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>写清服务城市、装修类型、预约量房方式</li>
+              </ul>
+            </article>
+
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-[var(--soft)] text-[var(--primary-dark)] px-3 py-2 text-sm font-black">第 8-14 天</span>
+              <h3 class="mt-5 text-2xl font-black">生产需求问答</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>发布老房翻新、整装报价、装修避坑、局改等内容</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>每篇都回答预算、周期、风险和适合人群</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>把施工节点、工地照片、验收细节放进去</li>
+              </ul>
+            </article>
+
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-amber-50 text-amber-800 px-3 py-2 text-sm font-black">第 15-30 天</span>
+              <h3 class="mt-5 text-2xl font-black">建立转化闭环</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>做“免费户型诊断/预算初估”入口</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>整理业主评价和交付记录专题</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>每周测试 AI 是否能按城市和需求推荐公司</li>
+              </ul>
+            </article></div>
+        </section>
+
+        <section id="contact" class="mx-auto max-w-7xl px-5 pb-16 pt-8 lg:px-8 lg:pb-24">
+          <div class="grid gap-6 rounded-2xl bg-slate-950 p-6 text-white sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <p class="text-sm font-black" style="color: color-mix(in srgb, var(--primary) 35%, white)">FREE GEO CHECK</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal sm:text-4xl">想知道你的装修公司能不能被 AI 推荐？</h2>
+              <p class="mt-4 max-w-3xl text-base leading-7 text-slate-300">提供公司名、官网或案例链接，我们可以做一次 AI 可见度诊断：看业主问豆包/DeepSeek 时，你的公司有没有机会被推荐。</p>
+            </div>
+            <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <a href="tel:15655931530" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-black text-slate-950 hover:-translate-y-0.5">
+                <i data-lucide="phone" class="h-4 w-4" aria-hidden="true"></i>电话咨询
+              </a>
+              <a href="./" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/20 px-5 py-3 text-sm font-black text-white hover:-translate-y-0.5 hover:bg-white/10">
+                <i data-lucide="home" class="h-4 w-4" aria-hidden="true"></i>返回数字徽州
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="border-t border-[var(--line)] bg-white">
+        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-sm text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <span>© 2026 数字徽州 · GEO 可视化内容</span>
+          <span>面向装修公司的 AI 推荐优化示例页</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const chartData = {"radarLabels": ["城市覆盖", "案例完整", "报价透明", "工艺说明", "评价证据", "流程清晰"], "current": [58, 46, 38, 52, 55, 44], "target": [88, 84, 78, 82, 80, 86], "intentLabels": ["老房翻新", "整装", "报价", "避坑", "局改", "办公室"], "intentValues": [88, 76, 72, 68, 55, 48], "primary": "#4f46e5", "accent": "#0f766e"};
+      function safeQuerySelector(selector) {
+        try {
+          return document.querySelector(selector);
+        } catch (error) {
+          console.error("选择器错误：", selector, error);
+          return null;
+        }
+      }
+      function createCharts() {
+        if (!window.Chart) { return; }
+        const radarCanvas = safeQuerySelector("#radarChart");
+        const intentCanvas = safeQuerySelector("#intentChart");
+        if (radarCanvas) {
+          new Chart(radarCanvas, {
+            type: "radar",
+            data: {
+              labels: chartData.radarLabels,
+              datasets: [
+                {
+                  label: "当前基础",
+                  data: chartData.current,
+                  borderColor: chartData.primary,
+                  backgroundColor: "rgba(15, 118, 110, 0.14)",
+                  pointBackgroundColor: chartData.primary,
+                  pointBorderColor: "#ffffff",
+                  pointRadius: 4
+                },
+                {
+                  label: "优化目标",
+                  data: chartData.target,
+                  borderColor: chartData.accent,
+                  backgroundColor: "rgba(217, 119, 6, 0.08)",
+                  pointBackgroundColor: chartData.accent,
+                  pointBorderColor: "#ffffff",
+                  pointRadius: 4
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { labels: { color: "#334155", font: { weight: "700" } } } },
+              scales: {
+                r: {
+                  min: 0,
+                  max: 100,
+                  ticks: { display: false },
+                  grid: { color: "rgba(15, 23, 42, 0.1)" },
+                  angleLines: { color: "rgba(15, 23, 42, 0.08)" },
+                  pointLabels: { color: "#334155", font: { size: 12, weight: "700" } }
+                }
+              }
+            }
+          });
+        }
+        if (intentCanvas) {
+          new Chart(intentCanvas, {
+            type: "bar",
+            data: {
+              labels: chartData.intentLabels,
+              datasets: [{
+                label: "提问热度",
+                data: chartData.intentValues,
+                backgroundColor: chartData.intentValues.map((_, index) => index < 3 ? chartData.primary : (index < 5 ? "#14b8a6" : chartData.accent)),
+                borderRadius: 8,
+                maxBarThickness: 42
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: function(context) { return "建议优先级：" + context.raw + "/100"; } } }
+              },
+              scales: {
+                x: { grid: { display: false }, ticks: { color: "#334155", font: { weight: "700" } } },
+                y: { beginAtZero: true, max: 100, grid: { color: "rgba(15, 23, 42, 0.08)" }, ticks: { color: "#64748b" } }
+              }
+            }
+          });
+        }
+      }
+      document.addEventListener("DOMContentLoaded", function() {
+        try {
+          if (window.lucide) { window.lucide.createIcons(); }
+          createCharts();
+        } catch (error) {
+          console.error("页面初始化失败：", error);
+        }
+      });
+    </script>
+  </body>
+</html>

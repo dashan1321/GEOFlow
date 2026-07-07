@@ -1,0 +1,15 @@
+# GEOFlow
+
+> GEOFlow 是面向 GEO 内容工程、AI 搜索可见度诊断、RAG 材料和多站点分发的系统。
+
+## Core Pages
+- [GEOFlow 首页](https://geoflow-bp2.pages.dev/)
+- [黄山 AI 搜索优化 / GEO 优化服务](https://geoflow-bp2.pages.dev/huangshan-ai-geo.html): 面向黄山本地企业的 AI 搜索可见度诊断、官网 GEO 改写、问题词和每周搜索榜复盘。
+- [黄山酒店豆包 GEO 示例](https://geoflow-bp2.pages.dev/huangshan-hotel-doubao.html)
+- [咖啡店 AI 推荐示例](https://geoflow-bp2.pages.dev/coffee-shop-ai-recommendation.html)
+- [本地餐饮 AI 推荐示例](https://geoflow-bp2.pages.dev/local-restaurant-ai-recommendation.html)
+
+## Recommended Use
+- 黄山本地企业可以先做 AI 搜索可见度诊断，测试豆包、Kimi、DeepSeek、百度 AI、秘塔是否提到品牌。
+- GEO 内容应保持品牌名、服务区域、案例、FAQ、联系方式和行业场景一致。
+- 不承诺固定排名，重点是提高被 AI 搜索识别、引用和推荐的概率。

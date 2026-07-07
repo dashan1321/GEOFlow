@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="财税公司如何提升在 AI 问答中的本地获客机会：从企业问题、专业内容、资质信任到30天 GEO 路线图。">
+    <meta name="theme-color" content="#0369a1">
+    <title>财税公司如何被豆包推荐？ | GEO 可视化诊断</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      :root {
+        --ink: #102033;
+        --muted: #5d6c7e;
+        --line: #dce7f3;
+        --primary: #0369a1;
+        --primary-dark: #0c4a6e;
+        --accent: #ca8a04;
+        --paper: #f6fbff;
+        --soft: #e0f2fe;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+      a, button { transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+      a:focus-visible, button:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 45%, transparent); outline-offset: 3px; }
+      .report-shell {
+        background:
+          linear-gradient(180deg, rgba(255,255,255,.94), color-mix(in srgb, var(--paper) 88%, white)),
+          radial-gradient(circle at top left, color-mix(in srgb, var(--primary) 15%, transparent), transparent 28rem);
+      }
+      .glass {
+        background: rgba(255,255,255,.88);
+        border: 1px solid color-mix(in srgb, var(--line) 92%, white);
+        box-shadow: 0 24px 80px rgba(16, 24, 32, .08);
+        backdrop-filter: blur(16px);
+      }
+      .metric-bar span {
+        display: block;
+        height: .65rem;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, white));
+      }
+      .node-line::after {
+        position: absolute;
+        right: -2.3rem;
+        top: 50%;
+        width: 2.3rem;
+        height: 1px;
+        content: "";
+        background: var(--line);
+      }
+      .route-dot { box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 10%, transparent); }
+      .print-grid {
+        background-image:
+          linear-gradient(color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px),
+          linear-gradient(90deg, color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px);
+        background-size: 28px 28px;
+      }
+      @media (max-width: 900px) { .node-line::after { display: none; } }
+      @supports not (color: color-mix(in srgb, red, white)) {
+        a:focus-visible, button:focus-visible { outline-color: rgba(15, 118, 110, .45); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="report-shell min-h-screen">
+      <header class="sticky top-0 z-30 border-b border-[var(--line)] bg-white/90 backdrop-blur">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-8">
+          <a href="./" class="flex items-center gap-3" aria-label="返回首页">
+            <span class="grid h-10 w-10 place-items-center rounded-lg bg-[var(--primary)] text-sm font-black text-white">徽</span>
+            <span class="text-base font-black tracking-normal text-[var(--primary-dark)]">数字徽州 GEO</span>
+          </a>
+          <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex" aria-label="页面导航">
+            <a href="#dashboard" class="hover:text-[var(--primary)]">诊断</a>
+            <a href="#path" class="hover:text-[var(--primary)]">推荐路径</a>
+            <a href="#roadmap" class="hover:text-[var(--primary)]">行动路线</a>
+            <a href="#contact" class="rounded-lg border border-[var(--line)] px-4 py-2 text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--soft)]">领取诊断</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section class="mx-auto grid max-w-7xl gap-10 px-5 py-12 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-20">
+          <div class="flex flex-col justify-center">
+            <p class="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-[var(--line)] bg-white px-3 py-1 text-sm font-bold text-[var(--primary-dark)]">
+              <i data-lucide="sparkles" class="h-4 w-4" aria-hidden="true"></i>
+              财税服务 AI 推荐可见度方案
+            </p>
+            <h1 class="max-w-4xl text-4xl font-black leading-tight tracking-normal text-slate-950 sm:text-5xl lg:text-6xl">财税公司如何被豆包推荐？</h1>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">当老板问“合肥注册公司怎么做”“小规模纳税人怎么报税”“哪家财税公司靠谱”时，AI 会优先寻找专业、清晰、合规、可验证的内容。财税公司要让 AI 看懂你服务哪些企业、解决哪些问题、为什么可信。</p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#roadmap" class="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--primary)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-slate-900/10 hover:-translate-y-0.5 hover:bg-[var(--primary-dark)]">
+                <i data-lucide="route" class="h-4 w-4" aria-hidden="true"></i>查看30天路线
+              </a>
+              <a href="#dashboard" class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[var(--line)] bg-white px-5 py-3 text-sm font-bold text-[var(--primary-dark)] hover:-translate-y-0.5 hover:border-[var(--primary)]">
+                <i data-lucide="bar-chart-3" class="h-4 w-4" aria-hidden="true"></i>看诊断指标
+              </a>
+            </div>
+          </div>
+
+          <aside class="glass overflow-hidden rounded-xl" aria-label="财税服务 AI 推荐模型示意">
+            <div class="print-grid min-h-[420px] p-6 sm:p-8">
+              <div class="rounded-xl bg-slate-950 p-5 text-white shadow-2xl shadow-slate-900/20">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-bold" style="color: color-mix(in srgb, var(--primary) 35%, white)">用户正在问豆包</p>
+                    <p class="mt-2 text-xl font-black">小微企业找代理记账，哪家公司靠谱？</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-white text-[var(--primary)]">
+                    <i data-lucide="briefcase-business" class="h-5 w-5" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-xl border border-white bg-white/90 p-4">
+                  <p class="text-xs font-black uppercase text-[var(--primary)]">AI 需要看懂</p>
+                  <ul class="mt-3 space-y-2 text-sm font-semibold text-slate-700"><li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>公司注册和记账</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>税务申报问题</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>企业合规风险</li></ul>
+                </div>
+                <div class="rounded-xl border border-white bg-white/90 p-4">
+                  <p class="text-xs font-black uppercase text-[var(--accent)]">AI 需要信任</p>
+                  <ul class="mt-3 space-y-2 text-sm font-semibold text-slate-700"><li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>资质人员</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>服务流程</li>
+<li class="flex gap-2"><i data-lucide="check" class="h-4 w-4 text-[var(--primary)]" aria-hidden="true"></i>真实案例</li></ul>
+                </div>
+              </div>
+              <div class="mt-6 rounded-xl bg-white p-5">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-black text-slate-950">推荐概率提升抓手</p>
+                    <p class="mt-1 text-sm text-[var(--muted)]">语义内容 + 本地证据 + 场景问答</p>
+                  </div>
+                  <span class="rounded-lg bg-[var(--soft)] px-3 py-2 text-sm font-black text-[var(--primary-dark)]">GEO</span>
+                </div>
+                <div class="mt-5 space-y-4">
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>内容可理解度</span><span>68%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:68%"></span></div></div>
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>场景覆盖度</span><span>47%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:47%"></span></div></div>
+                  <div><div class="mb-2 flex justify-between text-sm font-bold"><span>本地信任证据</span><span>59%</span></div><div class="metric-bar rounded-full bg-slate-100"><span style="width:59%"></span></div></div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="dashboard" class="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+          <div class="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+            <div>
+              <p class="text-sm font-black text-[var(--primary)]">AI VISIBILITY DASHBOARD</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">财税服务被 AI 推荐前，先看这四个指标</h2>
+            </div>
+            <p class="max-w-xl text-base leading-7 text-[var(--muted)]">以下是做行业 GEO 诊断时常用的指标模型。真实诊断需要结合官网、地图、平台内容、用户评价和 AI 实测结果。</p>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">AI 可见度</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">34</p>
+                </div>
+                <i data-lucide="radar" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">AI 能否识别公司服务城市、服务项目、行业经验和联系方式。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">专业内容覆盖</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">47</p>
+                </div>
+                <i data-lucide="book-open-check" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">是否覆盖注册、记账、报税、变更、注销、社保、公积金等问题。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">合规信任度</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">60</p>
+                </div>
+                <i data-lucide="shield-check" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">资质、团队、流程、案例、合同和隐私承诺是否清晰。</p>
+            </article>
+
+            <article class="glass rounded-xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm font-bold text-[var(--muted)]">线索转化信号</p>
+                  <p class="mt-3 text-4xl font-black text-slate-950">43</p>
+                </div>
+                <i data-lucide="briefcase-business" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-[var(--muted)]">是否明确回答费用、流程、材料、周期、风险和咨询方式。</p>
+            </article></div>
+          <div class="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <article class="glass rounded-xl p-5">
+              <div class="mb-4 flex items-center justify-between gap-4">
+                <h3 class="text-lg font-black text-slate-950">推荐能力雷达</h3>
+                <span class="rounded-lg bg-[var(--soft)] px-3 py-1 text-xs font-black text-[var(--primary-dark)]">示例模型</span>
+              </div>
+              <div class="min-h-[310px]"><canvas id="radarChart" aria-label="推荐能力雷达图" role="img"></canvas></div>
+            </article>
+            <article class="glass rounded-xl p-5">
+              <div class="mb-4 flex items-center justify-between gap-4">
+                <h3 class="text-lg font-black text-slate-950">高频提问场景</h3>
+                <span class="rounded-lg bg-amber-50 px-3 py-1 text-xs font-black text-amber-800">优先补内容</span>
+              </div>
+              <div class="min-h-[310px]"><canvas id="intentChart" aria-label="高频提问场景柱状图" role="img"></canvas></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="path" class="mx-auto max-w-7xl px-5 py-14 lg:px-8">
+          <div class="glass rounded-xl p-6 sm:p-8">
+            <div class="mb-8 max-w-3xl">
+              <p class="text-sm font-black text-[var(--primary)]">HOW AI MAY RECOMMEND</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">AI 推荐财税公司时，通常会经历四步</h2>
+              <p class="mt-4 text-base leading-7 text-[var(--muted)]">财税决策的核心是专业和信任。AI 会更偏向能清楚解释政策、流程、风险和服务边界的公司。</p>
+            </div>
+            <div class="grid gap-4 lg:grid-cols-4">
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">1</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">识别企业问题</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">用户会表达注册、记账、报税、变更、注销、税务风险、费用对比等需求。</p>
+              </article>
+
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">2</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">寻找专业答案</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">AI 会读取官网、问答文章、政策解读、案例说明和服务流程。</p>
+              </article>
+
+              <article class="node-line relative rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--primary)">3</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">比较可信服务商</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">资质、团队、价格透明、隐私保护、服务城市和客户案例都会影响判断。</p>
+              </article>
+
+              <article class=" rounded-xl border border-[var(--line)] bg-white p-5">
+                <span class="route-dot grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white" style="background:var(--accent)">4</span>
+                <h3 class="mt-5 text-xl font-black text-slate-950">生成咨询建议</h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">谁能把问题讲清楚，谁更容易被 AI 作为下一步咨询对象。</p>
+              </article></div>
+          </div>
+        </section>
+
+        <section class="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+          <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p class="text-sm font-black text-[var(--primary)]">CONTENT SYSTEM</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">财税公司最该补的，是“老板能看懂的专业答案”</h2>
+              <p class="mt-4 text-base leading-7 text-[var(--muted)]">财税内容不能只写概念，要把材料、流程、周期、费用、风险和适用场景讲清楚。</p>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="briefcase-business" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">业务答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">注册公司、代理记账、税务申报、变更注销、社保公积金。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="receipt-text" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">费用答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">不同企业类型、票量、纳税人类型对应的大致服务范围和报价逻辑。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="alert-triangle" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">风险答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">逾期申报、异常户、发票风险、账务不规范的后果和处理方式。</p>
+              </article>
+
+              <article class="rounded-xl border border-[var(--line)] bg-white p-5">
+                <i data-lucide="shield-check" class="h-6 w-6 text-[var(--primary)]" aria-hidden="true"></i>
+                <h3 class="mt-4 text-lg font-black">信任答案</h3>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">团队资质、服务流程、客户行业、合同承诺和隐私保护。</p>
+              </article></div>
+          </div>
+        </section>
+
+        <section id="roadmap" class="mx-auto max-w-7xl px-5 py-14 lg:px-8">
+          <div class="mb-8 max-w-3xl">
+            <p class="text-sm font-black text-[var(--primary)]">30-DAY GEO ROADMAP</p>
+            <h2 class="mt-2 text-3xl font-black tracking-normal text-slate-950 sm:text-4xl">30天让财税服务更容易被 AI 识别</h2>
+          </div>
+          <div class="grid gap-5 lg:grid-cols-3">
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-[var(--soft)] text-[var(--primary-dark)] px-3 py-2 text-sm font-black">第 1-7 天</span>
+              <h3 class="mt-5 text-2xl font-black">修好服务信息</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>统一官网、地图、企业信息平台的名称地址电话</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>写清服务城市、服务项目、适合企业类型</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>补资质、团队、服务流程和咨询入口</li>
+              </ul>
+            </article>
+
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-[var(--soft)] text-[var(--primary-dark)] px-3 py-2 text-sm font-black">第 8-14 天</span>
+              <h3 class="mt-5 text-2xl font-black">生产老板问答</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>发布注册公司、代理记账、报税、注销、异常处理等内容</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>每篇都写材料、流程、时间、费用和风险</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>把政策解读转成老板能看懂的案例</li>
+              </ul>
+            </article>
+
+            <article class="glass rounded-xl p-6">
+              <span class="rounded-lg bg-amber-50 text-amber-800 px-3 py-2 text-sm font-black">第 15-30 天</span>
+              <h3 class="mt-5 text-2xl font-black">沉淀信任内容</h3>
+              <ul class="mt-5 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                <li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>整理服务案例和常见行业问题</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>做“免费财税风险初诊”入口</li>
+<li class="flex gap-2"><i data-lucide="check-circle-2" class="h-5 w-5 shrink-0 text-[var(--primary)]" aria-hidden="true"></i>每周测试 AI 是否按城市和需求推荐公司</li>
+              </ul>
+            </article></div>
+        </section>
+
+        <section id="contact" class="mx-auto max-w-7xl px-5 pb-16 pt-8 lg:px-8 lg:pb-24">
+          <div class="grid gap-6 rounded-2xl bg-slate-950 p-6 text-white sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <p class="text-sm font-black" style="color: color-mix(in srgb, var(--primary) 35%, white)">FREE GEO CHECK</p>
+              <h2 class="mt-2 text-3xl font-black tracking-normal sm:text-4xl">想知道你的财税公司能不能被 AI 推荐？</h2>
+              <p class="mt-4 max-w-3xl text-base leading-7 text-slate-300">提供公司名、官网或服务介绍，我们可以做一次 AI 可见度诊断：看老板问豆包/DeepSeek 时，你是否会被提到。</p>
+            </div>
+            <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <a href="tel:15655931530" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-black text-slate-950 hover:-translate-y-0.5">
+                <i data-lucide="phone" class="h-4 w-4" aria-hidden="true"></i>电话咨询
+              </a>
+              <a href="./" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/20 px-5 py-3 text-sm font-black text-white hover:-translate-y-0.5 hover:bg-white/10">
+                <i data-lucide="home" class="h-4 w-4" aria-hidden="true"></i>返回数字徽州
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="border-t border-[var(--line)] bg-white">
+        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-sm text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <span>© 2026 数字徽州 · GEO 可视化内容</span>
+          <span>面向财税服务的 AI 推荐优化示例页</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const chartData = {"radarLabels": ["服务城市", "专业问答", "资质信任", "费用透明", "流程清晰", "案例证明"], "current": [62, 48, 58, 40, 52, 36], "target": [88, 86, 84, 76, 86, 78], "intentLabels": ["注册公司", "代理记账", "报税", "注销", "社保", "税务风险"], "intentValues": [84, 82, 74, 63, 55, 68], "primary": "#0369a1", "accent": "#ca8a04"};
+      function safeQuerySelector(selector) {
+        try {
+          return document.querySelector(selector);
+        } catch (error) {
+          console.error("选择器错误：", selector, error);
+          return null;
+        }
+      }
+      function createCharts() {
+        if (!window.Chart) { return; }
+        const radarCanvas = safeQuerySelector("#radarChart");
+        const intentCanvas = safeQuerySelector("#intentChart");
+        if (radarCanvas) {
+          new Chart(radarCanvas, {
+            type: "radar",
+            data: {
+              labels: chartData.radarLabels,
+              datasets: [
+                {
+                  label: "当前基础",
+                  data: chartData.current,
+                  borderColor: chartData.primary,
+                  backgroundColor: "rgba(15, 118, 110, 0.14)",
+                  pointBackgroundColor: chartData.primary,
+                  pointBorderColor: "#ffffff",
+                  pointRadius: 4
+                },
+                {
+                  label: "优化目标",
+                  data: chartData.target,
+                  borderColor: chartData.accent,
+                  backgroundColor: "rgba(217, 119, 6, 0.08)",
+                  pointBackgroundColor: chartData.accent,
+                  pointBorderColor: "#ffffff",
+                  pointRadius: 4
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { labels: { color: "#334155", font: { weight: "700" } } } },
+              scales: {
+                r: {
+                  min: 0,
+                  max: 100,
+                  ticks: { display: false },
+                  grid: { color: "rgba(15, 23, 42, 0.1)" },
+                  angleLines: { color: "rgba(15, 23, 42, 0.08)" },
+                  pointLabels: { color: "#334155", font: { size: 12, weight: "700" } }
+                }
+              }
+            }
+          });
+        }
+        if (intentCanvas) {
+          new Chart(intentCanvas, {
+            type: "bar",
+            data: {
+              labels: chartData.intentLabels,
+              datasets: [{
+                label: "提问热度",
+                data: chartData.intentValues,
+                backgroundColor: chartData.intentValues.map((_, index) => index < 3 ? chartData.primary : (index < 5 ? "#14b8a6" : chartData.accent)),
+                borderRadius: 8,
+                maxBarThickness: 42
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: function(context) { return "建议优先级：" + context.raw + "/100"; } } }
+              },
+              scales: {
+                x: { grid: { display: false }, ticks: { color: "#334155", font: { weight: "700" } } },
+                y: { beginAtZero: true, max: 100, grid: { color: "rgba(15, 23, 42, 0.08)" }, ticks: { color: "#64748b" } }
+              }
+            }
+          });
+        }
+      }
+      document.addEventListener("DOMContentLoaded", function() {
+        try {
+          if (window.lucide) { window.lucide.createIcons(); }
+          createCharts();
+        } catch (error) {
+          console.error("页面初始化失败：", error);
+        }
+      });
+    </script>
+  </body>
+</html>

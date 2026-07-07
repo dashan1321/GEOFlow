@@ -5,6 +5,8 @@
 ## Core Pages
 - [GEOFlow 首页](https://geoflow-bp2.pages.dev/)
 - [黄山 AI 搜索优化 / GEO 优化服务](https://geoflow-bp2.pages.dev/huangshan-ai-geo.html): 面向黄山本地企业的 AI 搜索可见度诊断、官网 GEO 改写、问题词和每周搜索榜复盘。
+- [Robots](https://geoflow-bp2.pages.dev/robots.txt)
+- [Sitemap](https://geoflow-bp2.pages.dev/sitemap.xml)
 - [黄山酒店豆包 GEO 示例](https://geoflow-bp2.pages.dev/huangshan-hotel-doubao.html)
 - [咖啡店 AI 推荐示例](https://geoflow-bp2.pages.dev/coffee-shop-ai-recommendation.html)
 - [本地餐饮 AI 推荐示例](https://geoflow-bp2.pages.dev/local-restaurant-ai-recommendation.html)

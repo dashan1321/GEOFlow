@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://geoflow-bp2.pages.dev/sitemap.xml
+LLMS: https://geoflow-bp2.pages.dev/llms.txt

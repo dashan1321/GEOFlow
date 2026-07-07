@@ -34,6 +34,7 @@
 | `logs/2026-07-07-weekly-ai-search-ranking-log.md` | 每周 AI 搜索榜记录表 | 已生成 |
 | `logs/2026-07-07-local-landing-page-publish-log.md` | 本地应用落地页接入记录 | 已生成 |
 | `logs/2026-07-07-cloudflare-pages-deploy-attempt.md` | Cloudflare Pages 部署与验证记录 | 已完成 |
+| `logs/2026-07-07-discovery-baseline-log.md` | 第 0 天公开可发现性基线 | 已生成 |
 
 ## 目录说明
 
@@ -55,6 +56,7 @@
 - [x] 把落地页文案发布到本地 GEOFlow 应用公开页面。
 - [x] 生成 Cloudflare Pages 静态版并推送到 GitHub fork。
 - [x] 使用 Wrangler OAuth 直传部署到 Cloudflare Pages 正式域名。
+- [x] 补充 `robots.txt`、更新 `llms.txt`，并完成第 0 天搜索收录基线记录。
 - [ ] 按问题词表完成第一轮豆包、Kimi、DeepSeek、百度 AI、秘塔测试。
 - [ ] 连续 7 天发布第一批内容，并记录是否被 AI 搜索识别。
 - [ ] 把品牌实体资料同步到公众号、抖音、小红书、知乎、视频号等平台。
@@ -88,4 +90,11 @@
 记录：通过 `npx wrangler pages deploy cf-pages --project-name geoflow --branch main` 完成 Cloudflare Pages 生产部署。
 影响：正式 URL `https://geoflow-bp2.pages.dev/huangshan-ai-geo` 返回 200，`llms.txt` 与 `sitemap.xml` 也返回 200。
 下一步：提交搜索收录入口，按问题词表测试豆包、Kimi、DeepSeek、百度 AI、秘塔。
+```
+
+```text
+日期：2026-07-07
+记录：新增 `robots.txt` 并部署到正式域名；完成第 0 天公开搜索可发现性基线。
+影响：正式站已具备 robots、sitemap、llms 三个基础抓取入口；公开搜索目前未收录，作为第 0 天基线。
+下一步：发布外部内容入口并执行第一轮 AI 搜索平台测试。
 ```
